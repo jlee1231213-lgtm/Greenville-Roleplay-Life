@@ -202,6 +202,9 @@ module.exports = {
                     '<:blue_arrow:1489774422767439924> **Reminder:** There is a 20 minute cool down until the next session.'
                 ].join('\n');
                 const defaultOverImage = 'https://media.discordapp.net/attachments/1471648998266769468/1490185130961014994/image-25.png?ex=69ecd7cd&is=69eb864d&hm=36a82cbdf01da9d2c4698ad54bc102a32d1154749ee394b807392a1d49056bcd&=&format=webp&quality=lossless&width=2118&height=1248';
+                const defaultCohostTitle = '<:gvrl_car:1487528927089135626> Greenville Roleplay Life -__ Co-host__ <:gvrl_car:1487528927089135626>';
+                const defaultCohostDescription = ':Animated_Arrow_Bluelite: [User] is now co-hosting this Greenville session. If the host is unavailable or isn\'t responding. Refer to the co-host.';
+                const defaultCohostImage = 'https://media.discordapp.net/attachments/1471648998266769468/1490184187796521213/image-28.png?ex=69ecd6ec&is=69eb856c&hm=363175826a5aa36e2ed0335282ecb4972a4949094786946d4ae6e075aa783f5a&=&format=webp&quality=lossless&width=1488&height=848';
                 const defaultTitle = field === 'reinvitesEmbed'
                     ? defaultReinvitesTitle
                     : field === 'releaseEmbed'
@@ -210,6 +213,8 @@ module.exports = {
                         ? STARTUP_EMBED_DEFAULTS.title
                     : field === 'overEmbed'
                         ? defaultOverTitle
+                    : field === 'cohostEmbed'
+                        ? defaultCohostTitle
                     : field === 'setupEmbed'
                         ? defaultSetupTitle
                         : '';
@@ -221,6 +226,8 @@ module.exports = {
                         ? STARTUP_EMBED_DEFAULTS.description
                     : field === 'overEmbed'
                         ? defaultOverDescription
+                    : field === 'cohostEmbed'
+                        ? defaultCohostDescription
                     : field === 'setupEmbed'
                         ? defaultSetupDescription
                         : '';
@@ -232,6 +239,8 @@ module.exports = {
                         ? STARTUP_EMBED_DEFAULTS.image
                     : field === 'overEmbed'
                         ? defaultOverImage
+                    : field === 'cohostEmbed'
+                        ? defaultCohostImage
                         : '';
                 const modal = new ModalBuilder().setCustomId(`embed_modal_${field}`).setTitle('Set Embed');
                 modal.addComponents(
