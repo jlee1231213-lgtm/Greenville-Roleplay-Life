@@ -98,6 +98,7 @@ module.exports = {
                                     { label: 'Setup Embed', value: 'setupEmbed' },
                                     { label: 'Welcome Embed', value: 'welcomeEmbed' },
                                     { label: 'Cohost Embed', value: 'cohostEmbed' },
+                                    { label: 'Supervise Embed', value: 'superviseEmbed' },
                                     { label: 'Release Embed', value: 'releaseEmbed' },
                                     { label: 'Reinvites Embed', value: 'reinvitesEmbed' },
                                     { label: 'Over Embed', value: 'overEmbed' },
@@ -162,7 +163,7 @@ module.exports = {
                 return interaction.showModal(modal);
             }
 
-            const embedFields = ['startupEmbed','eaEmbed','giveawayEmbed','setupEmbed','welcomeEmbed','cohostEmbed','cohostendEmbed','releaseEmbed','reinvitesEmbed','overEmbed'];
+            const embedFields = ['startupEmbed','eaEmbed','giveawayEmbed','setupEmbed','welcomeEmbed','cohostEmbed','superviseEmbed','cohostendEmbed','releaseEmbed','reinvitesEmbed','overEmbed'];
             if (embedFields.includes(interaction.values[0])) {
                 const field = interaction.values[0];
                 const currentEmbed = field === 'startupEmbed'
@@ -205,6 +206,9 @@ module.exports = {
                 const defaultCohostTitle = '<:gvrl_car:1487528927089135626> Greenville Roleplay Life -__ Co-host__ <:gvrl_car:1487528927089135626>';
                 const defaultCohostDescription = ':Animated_Arrow_Bluelite: [User] is now co-hosting this Greenville session. If the host is unavailable or isn\'t responding. Refer to the co-host.';
                 const defaultCohostImage = 'https://media.discordapp.net/attachments/1471648998266769468/1490184187796521213/image-28.png?ex=69ecd6ec&is=69eb856c&hm=363175826a5aa36e2ed0335282ecb4972a4949094786946d4ae6e075aa783f5a&=&format=webp&quality=lossless&width=1488&height=848';
+                const defaultSuperviseTitle = '<:blue_profile:1490083249479749865> Greenville Roleplay Life -__ Session Supervise__ <:blue_profile:1490083249479749865>';
+                const defaultSuperviseDescription = ':Animated_Arrow_Bluelite: [User] is now Supervising this Greenville Session. This is to run the session smoothly and no FRPers.';
+                const defaultSuperviseImage = 'https://media.discordapp.net/attachments/1471648998266769468/1490184267022733543/image-24.png?ex=69ecd6ff&is=69eb857f&hm=2e70ddddc6152b1700ff25990a50ffec9ac40afad8f304502e39cabba5a81dee&=&format=webp&quality=lossless&width=1494&height=856';
                 const defaultTitle = field === 'reinvitesEmbed'
                     ? defaultReinvitesTitle
                     : field === 'releaseEmbed'
@@ -215,6 +219,8 @@ module.exports = {
                         ? defaultOverTitle
                     : field === 'cohostEmbed'
                         ? defaultCohostTitle
+                    : field === 'superviseEmbed'
+                        ? defaultSuperviseTitle
                     : field === 'setupEmbed'
                         ? defaultSetupTitle
                         : '';
@@ -228,6 +234,8 @@ module.exports = {
                         ? defaultOverDescription
                     : field === 'cohostEmbed'
                         ? defaultCohostDescription
+                    : field === 'superviseEmbed'
+                        ? defaultSuperviseDescription
                     : field === 'setupEmbed'
                         ? defaultSetupDescription
                         : '';
@@ -241,6 +249,8 @@ module.exports = {
                         ? defaultOverImage
                     : field === 'cohostEmbed'
                         ? defaultCohostImage
+                    : field === 'superviseEmbed'
+                        ? defaultSuperviseImage
                         : '';
                 const modal = new ModalBuilder().setCustomId(`embed_modal_${field}`).setTitle('Set Embed');
                 modal.addComponents(

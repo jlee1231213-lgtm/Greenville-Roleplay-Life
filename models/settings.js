@@ -28,6 +28,7 @@ const settingsSchema = new mongoose.Schema({
   giveawayEmbed: { title: String, description: String, image: String },
   welcomeEmbed: { title: String, description: String, image: String },
   cohostEmbed: { title: String, description: String, image: String },
+  superviseEmbed: { title: String, description: String, image: String },
   cohostendEmbed: { title: String, description: String, image: String },
   setupEmbed: { title: String, description: String, image: String },
   releaseEmbed: { title: String, description: String, image: String },
