@@ -6,6 +6,24 @@ const { getStartupEmbedTemplate } = require('../../utils/startupEmbedDefaults');
 
 const activeStartupSessions = new Map();
 
+async function syncStartupEmbedSetting(settings, startupTemplate) {
+  const current = settings.startupEmbed || {};
+  const isSynced =
+    current.title === startupTemplate.title &&
+    current.description === startupTemplate.description &&
+    current.image === startupTemplate.image;
+
+  if (isSynced) return;
+
+  settings.startupEmbed = {
+    title: startupTemplate.title,
+    description: startupTemplate.description,
+    image: startupTemplate.image
+  };
+  settings.markModified('startupEmbed');
+  await settings.save();
+}
+
 function applyStartupPlaceholders(value, userId, reactionsRequired, now) {
   return value
     .replace(/\$user|\[user\]|\[User\]/g, `<@${userId}>`)
@@ -40,6 +58,8 @@ module.exports = {
     const embedColor = settings.embedcolor || '#ab6cc4';
     const startupTemplate = getStartupEmbedTemplate(settings);
     const setupTemplate = settings.setupEmbed || {};
+
+    await syncStartupEmbedSetting(settings, startupTemplate);
 
     const embed = new EmbedBuilder()
       .setTitle(applyStartupPlaceholders(startupTemplate.title, userId, reactionsRequired, now))

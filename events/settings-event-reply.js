@@ -168,9 +168,6 @@ module.exports = {
                 const currentEmbed = field === 'startupEmbed'
                     ? getStartupEmbedTemplate(settings)
                     : settings?.[field] || {};
-                if (field === 'startupEmbed') {
-                    console.log(`[settings] Startup Embed opened for guild ${guildId}: ${currentEmbed.title}`);
-                }
                 const defaultSetupTitle = '## :load: Greenville Roleplay Life - __Session Setup__ :load:';
                 const defaultSetupDescription = '<:gvrl_dot:1487527971777417327> [user] is now setting up their Greenville Session. Give the host about 5-10 for  EA, Staff, Law Enforcement; to join early, then 5 minutes after Link will be given to Civilian(s)';
                 const defaultSetupImage = 'https://media.discordapp.net/attachments/1471648998266769468/1490181964282462299/image-14.png?ex=69ea31da&is=69e8e05a&hm=c0aa837607464286d56548390e63e78a48d4d6d40e712518d214fc7e713e7aef&=&format=webp&quality=lossless&width=1498&height=866';
@@ -230,7 +227,7 @@ module.exports = {
                             .setCustomId('title_input')
                             .setLabel('Title')
                             .setStyle(TextInputStyle.Short)
-                            .setValue(field === 'startupEmbed' ? STARTUP_EMBED_DEFAULTS.title : currentEmbed.title || defaultTitle)
+                            .setValue(currentEmbed.title || defaultTitle)
                             .setRequired(true)
                     ),
                     new ActionRowBuilder().addComponents(
@@ -238,7 +235,7 @@ module.exports = {
                             .setCustomId('desc_input')
                             .setLabel('Description')
                             .setStyle(TextInputStyle.Paragraph)
-                            .setValue(field === 'startupEmbed' ? STARTUP_EMBED_DEFAULTS.description : currentEmbed.description || defaultDescription)
+                            .setValue(currentEmbed.description || defaultDescription)
                             .setRequired(false)
                     ),
                     new ActionRowBuilder().addComponents(
@@ -246,7 +243,7 @@ module.exports = {
                             .setCustomId('image_input')
                             .setLabel('Image URL')
                             .setStyle(TextInputStyle.Short)
-                            .setValue(field === 'startupEmbed' ? STARTUP_EMBED_DEFAULTS.image : currentEmbed.image || defaultImage)
+                            .setValue(currentEmbed.image || defaultImage)
                             .setRequired(false)
                     )
                 );
