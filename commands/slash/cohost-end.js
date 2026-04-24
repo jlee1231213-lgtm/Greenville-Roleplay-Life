@@ -1,0 +1,45 @@
+const { SlashCommandBuilder, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
+const Settings = require('../../models/settings');
+const SessionLog = require('../../models/sessionlog');
+const { activeStartupSessions } = require('../slash/startup');
+
+module.exports = {
+  data: new SlashCommandBuilder()
+    .setName('cohost-end')
+    .setDescription('End a cohost session'),
+  async execute(interaction) {
+    const settings = await Settings.findOne({ guildId: interaction.guild.id });
+    const embedColor = settings?.embedcolor || '#ab6cc4';
+    const allowedRoleIds = [settings?.staffRoleId, settings?.adminRoleId].filter(Boolean);
+    if (!interaction.member.roles.cache.some(role => allowedRoleIds.includes(role.id))) return interaction.reply({ embeds: [new EmbedBuilder().setDescription('You do not have the required role to use this command.').setColor(embedColor)], ephemeral: true });
+
+    await interaction.deferReply({ ephemeral: true });
+    const userId = interaction.user.id;
+
+    const sessionEntry = [...activeStartupSessions.entries()]
+      .find(([id, data]) => data.userId === userId && data.type === 'cohost');
+    if (!sessionEntry) return interaction.editReply({ embeds: [new EmbedBuilder().setDescription('No active cohost session found in memory for you.').setColor(embedColor)] });
+
+    const [sessionId, sessionData] = sessionEntry;
+    await SessionLog.create({ guildId: interaction.guild.id, sessiontype: sessionData.type, sessionId, userId: sessionData.userId, timestarted: sessionData.timestamp, timeended: new Date() });
+    activeStartupSessions.delete(sessionId);
+
+    const cohostEndTemplate = settings?.cohostendEmbed || {};
+    const endEmbed = new EmbedBuilder()
+      .setTitle(cohostEndTemplate.title || 'Data not found')
+      .setDescription(cohostEndTemplate.description?.replace(/\$user/g, `<@${userId}>`).replace(/\$notes/g, note) || 'Data was not found, please use `/settings` to configure the Embed')
+      .setColor(embedColor)
+      .setFooter({ text: interaction.guild.name, iconURL: interaction.guild.iconURL() });
+    if (cohostEndTemplate.image?.startsWith('http')) endEmbed.setImage(cohostEndTemplate.image);
+    if (cohostEndTemplate.thumbnail?.startsWith('http')) endEmbed.setThumbnail(cohostEndTemplate.thumbnail);
+
+    const originalCohostMessage = await interaction.channel.messages.fetch(sessionData.messageId).catch(() => null);
+    const button = new ButtonBuilder().setCustomId('feedback').setLabel('Feedback Form').setStyle(ButtonStyle.Primary);
+    const actionRow = new ActionRowBuilder().addComponents(button);
+
+    if (originalCohostMessage && originalCohostMessage.reply) await originalCohostMessage.reply({ embeds: [endEmbed], components: [actionRow] });
+    else await interaction.channel.send({ embeds: [endEmbed], components: [actionRow] });
+
+    await interaction.editReply({ content: 'Command executed successfully', ephemeral: true });
+  }
+};
