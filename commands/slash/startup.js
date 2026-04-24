@@ -38,7 +38,7 @@ module.exports = {
     .addIntegerOption(option =>
       option.setName('reactions')
         .setDescription('Amount of reactions needed to start')
-        .setRequired(false)
+        .setRequired(true)
     ),
 
   async execute(interaction) {
@@ -52,7 +52,7 @@ module.exports = {
       return interaction.editReply({ content: 'You must have the Staff role', ephemeral: true });
     }
 
-    const reactionsRequired = interaction.options.getInteger('reactions') || 5;
+    const reactionsRequired = interaction.options.getInteger('reactions');
     const userId = interaction.user.id;
     const now = new Date();
     const embedColor = settings.embedcolor || '#ab6cc4';

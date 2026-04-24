@@ -16,18 +16,13 @@ const DEFAULT_OVER_EMBED = {
 function renderTemplate(value, userId, note) {
   return (value || '')
     .replace(/\$user|\[user\]|\[User\]/g, `<@${userId}>`)
-    .replace(/\$notes|\[notes\]|\[Notes\]/g, note || '');
+    .replace(/\$notes|\[notes\]|\[Notes\]/g, '');
 }
 
 module.exports = {
   data: new SlashCommandBuilder()
     .setName('over')
-    .setDescription('End the session')
-    .addStringOption(option =>
-      option.setName('notes')
-        .setDescription('How was the session')
-        .setRequired(false)
-    ),
+    .setDescription('End the session'),
 
   async execute(interaction) {
     try {
@@ -49,7 +44,6 @@ module.exports = {
       await interaction.deferReply({ ephemeral: true });
 
       const userId = interaction.user.id;
-      const note = interaction.options.getString('notes') || '';
       const channel = interaction.channel;
 
       const sessionEntry = [...activeStartupSessions.entries()]
@@ -84,8 +78,8 @@ module.exports = {
       const overDescription = endEmbedTemplate.description || DEFAULT_OVER_EMBED.description;
       const overImage = endEmbedTemplate.image || DEFAULT_OVER_EMBED.image;
       const endEmbed = new EmbedBuilder()
-        .setTitle(renderTemplate(overTitle, userId, note))
-        .setDescription(renderTemplate(overDescription, userId, note))
+        .setTitle(renderTemplate(overTitle, userId))
+        .setDescription(renderTemplate(overDescription, userId))
         .setColor(embedColor)
         .setFooter({ text: interaction.guild.name, iconURL: interaction.guild.iconURL() });
 
