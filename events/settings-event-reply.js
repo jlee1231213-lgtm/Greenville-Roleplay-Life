@@ -195,12 +195,21 @@ module.exports = {
                     '<:blue_arrow:1489774422767439924> **House Claiming:** [House Claiming]',
                     '<:blue_arrow:1489774422767439924> **Link:** [Link]'
                 ].join('\n');
+                const defaultOverTitle = 'Greenville Life Roleplay - __Session Over__ :blue_butterflies:';
+                const defaultOverDescription = [
+                    '<:blue_bow:1487528994307051530> [User] Has now ended their session. We hope you enjoyed it and another one will be hosted shortly, thank you for joining!',
+                    '',
+                    '<:blue_arrow:1489774422767439924> **Reminder:** There is a 20 minute cool down until the next session.'
+                ].join('\n');
+                const defaultOverImage = 'https://media.discordapp.net/attachments/1471648998266769468/1490185130961014994/image-25.png?ex=69ecd7cd&is=69eb864d&hm=36a82cbdf01da9d2c4698ad54bc102a32d1154749ee394b807392a1d49056bcd&=&format=webp&quality=lossless&width=2118&height=1248';
                 const defaultTitle = field === 'reinvitesEmbed'
                     ? defaultReinvitesTitle
                     : field === 'releaseEmbed'
                         ? defaultReleaseTitle
                     : field === 'startupEmbed'
                         ? STARTUP_EMBED_DEFAULTS.title
+                    : field === 'overEmbed'
+                        ? defaultOverTitle
                     : field === 'setupEmbed'
                         ? defaultSetupTitle
                         : '';
@@ -210,6 +219,8 @@ module.exports = {
                         ? defaultReleaseDescription
                     : field === 'startupEmbed'
                         ? STARTUP_EMBED_DEFAULTS.description
+                    : field === 'overEmbed'
+                        ? defaultOverDescription
                     : field === 'setupEmbed'
                         ? defaultSetupDescription
                         : '';
@@ -219,6 +230,8 @@ module.exports = {
                         ? defaultReleaseImage
                     : field === 'startupEmbed'
                         ? STARTUP_EMBED_DEFAULTS.image
+                    : field === 'overEmbed'
+                        ? defaultOverImage
                         : '';
                 const modal = new ModalBuilder().setCustomId(`embed_modal_${field}`).setTitle('Set Embed');
                 modal.addComponents(
