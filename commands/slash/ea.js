@@ -2,6 +2,22 @@ const { SlashCommandBuilder, EmbedBuilder, ButtonBuilder, ActionRowBuilder, Comp
 const StartupSession = require('../../models/startupsession');
 const Settings = require('../../models/settings');
 
+const DEFAULT_EA_EMBED = {
+  title: ':blue_butterflies: Greenville Life Roleplay - __Early Access!__ :blue_butterflies:',
+  description: [
+    '<:blue_arrow:1489774422767439924> @everyone [User] has now released Early Access to their session! Once in please listen to the host\'s instructions and park up upon arrival. Please park up ans wait for the host to release!',
+    '',
+    '> <:blue_arrow:1489774422767439924> Not listening to the host will result in a moderation to our staff team.',
+    '',
+    '**Link:**'
+  ].join('\n'),
+  image: 'https://media.discordapp.net/attachments/1471648998266769468/1490183831863689226/image-11.png?ex=69ecd697&is=69eb8517&hm=eb8d6c07cdc39f4dbf533ee1f056126a962ccb7e917516eb120fcf47a102a33f&=&format=webp&quality=lossless&width=1484&height=864'
+};
+
+function renderTemplate(value, userMention) {
+  return (value || '').replace(/\$user|\[user\]|\[User\]/g, userMention);
+}
+
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("ea")
@@ -46,14 +62,17 @@ module.exports = {
     const sessionLink = interaction.options.getString('link');
     const userMention = `<@${interaction.user.id}>`;
     const eaTemplate = settings.eaEmbed || {};
+    const eaTitle = eaTemplate.title || DEFAULT_EA_EMBED.title;
+    const eaDescription = eaTemplate.description || DEFAULT_EA_EMBED.description;
+    const eaImage = eaTemplate.image || DEFAULT_EA_EMBED.image;
 
     const embed = new EmbedBuilder()
-      .setTitle(eaTemplate.title?.replace(/\$user/g, userMention) || 'Data not found')
-      .setDescription(eaTemplate.description?.replace(/\$user/g, userMention) || 'Data was not found, please use `/settings` to configure the Embed.')
+      .setTitle(renderTemplate(eaTitle, userMention))
+      .setDescription(renderTemplate(eaDescription, userMention))
       .setColor(embedColor)
       .setFooter({ text: interaction.guild.name, iconURL: interaction.guild.iconURL() });
 
-    if (eaTemplate.image?.startsWith('http')) embed.setImage(eaTemplate.image);
+    if (eaImage?.startsWith('http')) embed.setImage(eaImage);
     if (eaTemplate.thumbnail?.startsWith('http')) embed.setThumbnail(eaTemplate.thumbnail);
 
     const button = new ButtonBuilder().setCustomId('get_ealink').setLabel('Get Link').setStyle(ButtonStyle.Primary);

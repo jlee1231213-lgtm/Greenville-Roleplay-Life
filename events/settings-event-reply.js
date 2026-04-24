@@ -209,10 +209,21 @@ module.exports = {
                 const defaultSuperviseTitle = '<:blue_profile:1490083249479749865> Greenville Roleplay Life -__ Session Supervise__ <:blue_profile:1490083249479749865>';
                 const defaultSuperviseDescription = ':Animated_Arrow_Bluelite: [User] is now Supervising this Greenville Session. This is to run the session smoothly and no FRPers.';
                 const defaultSuperviseImage = 'https://media.discordapp.net/attachments/1471648998266769468/1490184267022733543/image-24.png?ex=69ecd6ff&is=69eb857f&hm=2e70ddddc6152b1700ff25990a50ffec9ac40afad8f304502e39cabba5a81dee&=&format=webp&quality=lossless&width=1494&height=856';
+                const defaultEaTitle = ':blue_butterflies: Greenville Life Roleplay - __Early Access!__ :blue_butterflies:';
+                const defaultEaDescription = [
+                    '<:blue_arrow:1489774422767439924> @everyone [User] has now released Early Access to their session! Once in please listen to the host\'s instructions and park up upon arrival. Please park up ans wait for the host to release!',
+                    '',
+                    '> <:blue_arrow:1489774422767439924> Not listening to the host will result in a moderation to our staff team.',
+                    '',
+                    '**Link:**'
+                ].join('\n');
+                const defaultEaImage = 'https://media.discordapp.net/attachments/1471648998266769468/1490183831863689226/image-11.png?ex=69ecd697&is=69eb8517&hm=eb8d6c07cdc39f4dbf533ee1f056126a962ccb7e917516eb120fcf47a102a33f&=&format=webp&quality=lossless&width=1484&height=864';
                 const defaultTitle = field === 'reinvitesEmbed'
                     ? defaultReinvitesTitle
                     : field === 'releaseEmbed'
                         ? defaultReleaseTitle
+                    : field === 'eaEmbed'
+                        ? defaultEaTitle
                     : field === 'startupEmbed'
                         ? STARTUP_EMBED_DEFAULTS.title
                     : field === 'overEmbed'
@@ -228,6 +239,8 @@ module.exports = {
                     ? defaultReinvitesDescription
                     : field === 'releaseEmbed'
                         ? defaultReleaseDescription
+                    : field === 'eaEmbed'
+                        ? defaultEaDescription
                     : field === 'startupEmbed'
                         ? STARTUP_EMBED_DEFAULTS.description
                     : field === 'overEmbed'
@@ -243,6 +256,8 @@ module.exports = {
                     ? defaultSetupImage
                     : field === 'releaseEmbed'
                         ? defaultReleaseImage
+                    : field === 'eaEmbed'
+                        ? defaultEaImage
                     : field === 'startupEmbed'
                         ? STARTUP_EMBED_DEFAULTS.image
                     : field === 'overEmbed'
